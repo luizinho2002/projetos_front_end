@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minhas Finanças - Login/Cadastro</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="app-title">Minhas Finanças</h1>
+    </header>
+
+    <main class="auth-container">
+      <div class="form-toggle">
+        <button id="showLogin" class="active">Login</button>
+        <button id="showRegister">Cadastre-se</button>
+      </div>
+
+      <form id="loginForm" class="auth-form active">
+        <h2>Login</h2>
+        <div class="form-group">
+          <label for="loginEmail">E-mail</label>
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="seu@email.com"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Senha</label>
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="********"
+            required
+          />
+        </div>
+        <button type="submit" class="btn primary">Entrar</button>
+        <p id="loginMessage" class="message"></p>
+      </form>
+
+      <form action="" id="registerForm" class="auth-form hidden">
+        <h2>Cadastre-se</h2>
+        <div class="form-group">
+          <label for="registerName">Nome</label>
+          <input
+            type="text"
+            id="registerName"
+            placeholder="Seu nome"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="registerEmail">E-mail</label>
+          <input
+            type="email"
+            id="registerEmail"
+            placeholder="seu@email.com"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="registerPassword">Senha</label>
+          <input
+            type="password"
+            id="registerPassword"
+            placeholder="Mínimo 6 caracteres"
+            required
+            minlength="6"
+          />
+        </div>
+        <div class="form-group">
+          <label for="registerConfirmPassword">Confirmar Senha</label>
+          <input
+            type="password"
+            id="registerConfirmPassword"
+            placeholder="Confirme sua senha"
+            required
+          />
+        </div>
+        <button type="submit" class="btn primary">Cadastrar</button>
+        <p id="registerMessage" class="message"></p>
+      </form>
+    </main>
+
+    <script src="js/auth.js"></script>
+  </body>
+</html>
