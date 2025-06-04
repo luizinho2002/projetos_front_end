@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minhas Finanças - Dashboard</title>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="app-title">Minhas Finanças</h1>
+      <div class="dashboard-header">
+        <span id="welcomeMessage" class="welcome-message">Olá, Usuário!</span>
+        <a href="index.html" id="logoutBtn" class="btn-logout">Sair</a>
+    </header>
+
+    <main class="dashboard-container">
+      <section class="summary-cards">
+        <div class="card revenue">
+          <h3>Total de Receitas (Mês)</h3>
+          <p id="totalRevenue">R$ 0,00</p>
+        </div>
+        <div class="card expense">
+          <h3>Total de Despesas (Mês)</h3>
+          <p id="totalExpense">R$ 0,00</p>
+        </div>
+        <div class="card balance">
+          <h3>Saldo (Mês)</h3>
+          <p id="monthlyBalance">R$ 0,00</p>
+        </div>
+      </section>
+
+      <section class="add-transaction-section">
+        <h2>Adicionar Nova Transação</h2>
+        <form id="transactionForm" class="transaction-form">
+          <div class="form-group">
+            <label for="transactionType">Tipo</label>
+            <select id="transactionType" required>
+              <option value="revenue">Receita</option>
+              <option value="expense">Despesa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="transactionDescription">Descrição</label>
+            <input type="text" id="transactionDescription" placeholder="Ex: Salário, Aluguel, Supermercado" required>
+          </div>
+          <div class="form-group">
+            <label for="transactionValue">Valor</label>
+            <input type="number" id="transactionValue" step="0.01" placeholder="Ex: 1500.00" required>
+          </div>
+          <div class="form-group">
+            <label for="transactionCategory">Categoria</label>
+            <select id="transactionCategory" required>
+              <option value="">Selecione uma categoria</option>
+              <option value="salario">Salário</option>
+              <option value="investimento">Investimentos</option>
+              <option value="alimentacao">Alimentação</option>
+              <option value="transporte">Transporte</option>
+              <option value="moraria">Moradia</option>
+              <option value="lazer">Lazer</option>
+              <option value="saude">Saúde</option>
+              <option value="educacao">Educação</option>
+              <option value="outros">Outros</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="transactionDate">Data</label>
+            <input type="date" id="transactionDate" required>
+          </div>
+          <button type="submit" class="btn primary">Adicionar Transação</button>
+        </form>
+        <p id="transactionMessage" class="message"></p>
+      </section>
+
+      <section class="transactions-section">
+        <h2>Transações do Mês</h2>
+        <table class="transactions-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Tipo</th>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsList">
+            <tr><td colspan="5" class="no-transactions-message">Nenhuma transação registrada ainda neste mês.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="category-expenses-chart">
+        <h2>Despesas por Categoria (Mês)</h2>
+        <div class="chart-container">
+          <p>O gráfico de despesas por categoria aparecerá aqui.</p>
+          <p>(Será implementado em uma fase posterior, talvez uma biblioteca de gráficos como Chart.js)</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>
