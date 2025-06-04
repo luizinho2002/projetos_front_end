@@ -1,0 +1,119 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap");
+
+/* Estilos Gerais */
+:root {
+  --primary-color: #4caf50; /* Verde */
+  --secondary-color: #2196f3; /* Azul */
+  --text-color: #333;
+  --background-color: #f4f7f6;
+  --card-background: #ffffff;
+  --border-color: #ddd;
+  --error-color: #f44336; /* Vermelho */
+  --success-color: #4caf50; /* Verde */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+  color: var(--text-color);
+}
+
+body {
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.app-title {
+  color: #fff;
+  margin: 0;
+}
+
+/* Estilos de Autenticação (Login/Cadastro) */
+.auth-container {
+  max-width: 400px;
+  margin: 50px auto;
+  background-color: var(--card-background);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-toggle {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.form-toggle button {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid var(--border-color);
+  background-color: #f0f0f0;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.form-toggle button:first-child {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.form-toggle button:last-child {
+  border-top-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.form-toggle button.active {
+  background-color: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+
+.auth-form {
+  display: none; /* Escondido por padrão */
+}
+
+.auth-form.active {
+  display: block; /* Visível quando ativo */
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: var(--primary-color);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 16px;
+}
