@@ -194,7 +194,8 @@ body {
 .welcome-message {
   font-size: 1.5rem;
   font-weight: bold;
-  color: var(--primary-color);
+  /* color: var(--primary-color); */
+  color: #fff;
 }
 
 .btn-logout {
@@ -242,6 +243,203 @@ body {
 .card.expense {
   border-color: var(--error-color);
 }
-.card-balance {
+.card.balance {
   border-color: var(--secondary-color);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  color: var(--text-color);
+}
+
+.card p {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.card.revenue p {
+  color: var(--success-color);
+}
+.card.expense p {
+  color: var(--error-color);
+}
+.card.balance p {
+  color: var(--secondary-color);
+}
+
+/* Estilos para as Seções de Adicionar Transação, Transações e Gráfico */
+.transactions-section,
+.add-transaction-section,
+.category-expenses-chart {
+  background-color: var(--card-background);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Títulos das Seções (Adicionar Transação, Transações, Gráfico) */
+.add-transaction-section h2,
+.transactions-section h2,
+.category-expenses-chart h2 {
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+/* Estilos para os Grupos de Formulário dentro da seção de transação */
+.transaction-form .form-group {
+  margin-bottom: 15px;
+}
+
+.transactio-form .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.transaction-form .form-group input,
+.transaction-form .form-group select,
+.transaction-form .form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.transaction-form .btn {
+  margin-top: 15px;
+}
+
+/* Estilos para a Tabela de Transações */
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.transactions-table th,
+.transactions-tble td {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+.transactions-table th {
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: bold;
+}
+
+.transactions-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.transactions-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Cores específicas para o tipo de transação na tabela (aplicadas via JS) */
+.transaction-type-revenue {
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+.transaction-type-expense {
+  color: var(--error-color); /* Texto em vermelho para despesas */
+}
+
+.no-transactions-message {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: #666;
+}
+
+/* Estilos para a Área do Gráfico (placeholder poe enquanto) */
+.category-expenses-chart {
+  background-color: var(--card-background);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.category-expenses-chart h2 {
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.chart-container {
+  height: 300px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed var(--border-color);
+  color: #999;
+  background-color: #fcfcfc;
+  border-radius: 4px;
+}
+
+/* Responsividade Geral para Telas Menores (Media Queries) */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 15px;
+    margin: 15px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    padding-bottom: 10px;
+  }
+
+  .welcome-message {
+    font-size: 1.2rem;
+  }
+
+  .summary-cards {
+    flex-direction: column;
+  }
+
+  .card {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .transactions-table th,
+  .transactions-table td {
+    padding: 8px;
+    font-size: 0.9em;
+  }
+
+  /* Para tabelas em muito pequenas, pode-se fazer com que a tabela role horizontalmente */
+  /* .transactions-table {
+      display: block;
+      overflow-x: hidden;
+      white-space: nowrap;
+  } */
+}
+
+/* Media query para telas muito pequenas (ex: celulares antigos ou modo paisagem) */
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 10px;
+    margin: 10px;
+  }
+
+  .card p {
+    font-size: 1.5em;
+  }
+
+  .add-transaction-section h2,
+  .transactions-section h2,
+  .category-expenses-chart h2 {
+    font-size: 1.3em;
+  }
 }
