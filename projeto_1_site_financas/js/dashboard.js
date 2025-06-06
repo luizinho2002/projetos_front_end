@@ -61,6 +61,57 @@ document.addEventListener("DOMContentLoaded", () => {
     totalExpense.textContent = `R$ ${expense.toFixed(2).replace(".", ",")}`;
     monthlyBalance.textContent = `R$ ${(revenue - expense)
       .toFixed(2)
-      .replace(".", "-")}`;
+      .replace(".", ",")}`;
   }
+
+  // Evento de submit do formulário de transação
+  transactionForm.addEventListener("submit", (e) => {
+    e.preventDefault(); // Impede o recarregamento da página
+
+    const type = document.getElementById("transactionType").value;
+    const description = document.getElementById("transactionDescriptio").value;
+    const value = parseFloat(document.getElementById("transactionValue").value);
+    const category = document.getElementById("transactionCategory").value;
+    const date = document.getElementById("transactionDate").value;
+
+    // Validação básica
+    if (!description || isNaN(value) || value <= 0 || !category || !date) {
+      transactionMessage.textContent =
+        "Por favor, preencha todos os campos e insira um valor válido.";
+      transactionMessage.className = "message error";
+      transactionMessage.style.display = "block";
+      return;
+    }
+
+    const newTransaction = {
+      id: Date.now(), // ID único para a transação
+      type,
+      description,
+      value,
+      category,
+      date,
+    };
+
+    transactions.push(newTransacion);
+    localStorage.setItem("transactions", JSON.stringify(transactions)); // Salva no localStorage
+
+    transactionMessage.textContent = "Transação adicionar com sucesso!";
+    transactionMessage.className = "message success";
+    transactionMessage.style.display = "block";
+
+    transactionForm.reset(); // Limpa o formulário
+    renderTransactionsAndSummaries(); // Atualiza a UI
+  });
+
+  // Evento para botão de Sair/Logout
+  logoutBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.removeItem("currentUser"); // Remove o usuário logado do localStorage
+    // Opcional: localStorage.removeItem('transactions'); // Se quiser limpar transações ao sair
+    window.location.href = "index.html"; // Redireciona para página de login
+  });
+
+  // Inicializar o dashboard ao carregar a página
+  displayWelcomeMessage();
+  renderTransactionsAndSummaries();
 });
