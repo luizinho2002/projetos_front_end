@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalExpense = document.getElementById("totalExpense");
   const monthlyBalance = document.getElementById("monthlyBalance");
 
+  let myChart = null; // Para armazenar a instância do gráfico do Chart.js
+
   let transactions = JSON.parse(localStorage.getItem("transactions")) || []; // Carrega transações do localStorage ou inicia vazio
 
   // Função para exibir o nome do usuário
@@ -23,6 +25,70 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Função para renderizar o gráfico
+  function renderExpensesChart() {
+    const expenseCategories = {};
+
+    transactions
+      .filter((t) => t.type === "expense")
+      .forEach((t) => {
+        if (expenseCategories[t.category]) {
+          expenseCategories[t.category] += t.value;
+        } else {
+          expenseCategories[t.category] = t.value;
+        }
+      });
+
+    const labels = Object.keys(expenseCategories);
+    const data = Object.values(expenseCategories);
+
+    const ctx = document.getElementById("expensesChart").getContext("2d");
+
+    if (myChart) {
+      myChart.destroy();
+    }
+
+    myChart = new CharacterData(ctx, {
+      type: "doughnut",
+      data: {
+        labels: labels.length > 0 ? labels : ["Sem Despesas"],
+        datasets: [
+          {
+            label: "Despesas por Categoria",
+            data: data.length > 0 ? data : [1],
+            backgroundColor: [
+              "#FF6384",
+              "#36A2EB",
+              "#FFCE56",
+              "#4BC0C0",
+              "#9966FF",
+              "#FF9F40",
+              "#E7E9ED",
+              "#A05195",
+              "#D4B996",
+              "#7FBCBF",
+            ],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRadio: false,
+        plugins: {
+          legend: {
+            position: "top",
+          },
+          title: {
+            display: true,
+            text: "Distribuição de Despesas por Categoria",
+          },
+        },
+      },
+    });
+  }
+
+  renderExpensesChart();
+
   // Função para renderizar as transações na tabela e atualizar os resumos
   function renderTransactionsAndSummaries() {
     transactionsList.innerHTML = ""; // Limpa a tabela antes de renderizar
@@ -30,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let expense = 0;
 
     if (transactions.length === 0) {
-      transactionsList.innetHTML =
+      transactionsList.innerHTML =
         '<tr><td colspan="5" class="no-transactions-message">Nenhuma transação registrada ainda neste mês.</td></tr>';
     } else {
       transactions.forEach((transaction) => {
@@ -40,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
           transaction.type === "revenue" ? "Receita" : "Despesa";
         newRow.insertCell(2).textContent = transaction.description;
         newRow.insertCell(3).textContent = transaction.category;
-        const valueCell = newRow.insetCell(4);
+        const valueCell = newRow.insertCell(4);
         valueCell.textContent = `R$ ${transaction.value
           .toFixed(2)
           .replace(".", ",")}`;
@@ -69,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault(); // Impede o recarregamento da página
 
     const type = document.getElementById("transactionType").value;
-    const description = document.getElementById("transactionDescriptio").value;
+    const description = document.getElementById("transactionDescription").value;
     const value = parseFloat(document.getElementById("transactionValue").value);
     const category = document.getElementById("transactionCategory").value;
     const date = document.getElementById("transactionDate").value;
@@ -92,10 +158,10 @@ document.addEventListener("DOMContentLoaded", () => {
       date,
     };
 
-    transactions.push(newTransacion);
+    transactions.push(newTransaction);
     localStorage.setItem("transactions", JSON.stringify(transactions)); // Salva no localStorage
 
-    transactionMessage.textContent = "Transação adicionar com sucesso!";
+    transactionMessage.textContent = "Transação adicionada com sucesso!";
     transactionMessage.className = "message success";
     transactionMessage.style.display = "block";
 

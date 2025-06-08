@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Minhas Finanças - Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
@@ -93,8 +94,7 @@
       <section class="category-expenses-chart">
         <h2>Despesas por Categoria (Mês)</h2>
         <div class="chart-container">
-          <p>O gráfico de despesas por categoria aparecerá aqui.</p>
-          <p>(Será implementado em uma fase posterior, talvez uma biblioteca de gráficos como Chart.js)</p>
+          <canvas id="expensesChart"></canvas>
         </div>
       </section>
     </main>
