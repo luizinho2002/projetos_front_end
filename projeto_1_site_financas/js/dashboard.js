@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       welcomeMessage.textContent = `Olá, ${currentUser.username}!`;
     } else {
       welcomeMessage.textContent = `Olá!`;
-      // Redireciona se não houver usuário logado (opcional, dependendo dua sua lógica de auth)
+      // Redireciona se não houver usuário logado (opcional, dependendo da sua lógica de auth)
       // window.location.href = `index.html`;
     }
   }
