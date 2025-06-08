@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Redirecionar para o dashboard
       setTimeout(() => {
         window.location.href = "dashboard.html";
-      }, 1000); // Pequeno atrao para a mensagem de sucesso aparecer
+      }, 1000); // Pequeno atraso para a mensagem de sucesso aparecer
     } else {
       loginMessage.textContent = "E-mail ou senha incorretos";
       loginMessage.className = "message error";
