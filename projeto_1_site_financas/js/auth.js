@@ -40,9 +40,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const password = registerForm.elements["registerPassword"].value;
 
+    const confirmPassword =
+      registerForm.elements["registerConfirmPassword"].value;
+
     // Validação básica
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !confirmPassword) {
       registerMessage.textContent = "Por favor, preencha todos os campos.";
+      registerMessage.className = "message error";
+      registerMessage.style.display = "block";
+      return;
+    }
+
+    // Validação para verificar se as senhas coincidem
+    if (password !== confirmPassword) {
+      registerMessage.textContent = "As senhas não coincidem.";
       registerMessage.className = "message error";
       registerMessage.style.display = "block";
       return;
@@ -60,20 +71,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Adicionar novo usuário
-    users.push({ usermane, email, password });
+    users.push({ username, email, password });
     localStorage.setItem("users", JSON.stringify(users)); // Salvar no localStorage
 
-    registerMessage.textContent = "Cadastro realizado com sucesso! Faça login";
+    registerMessage.textContent = "Cadastro realizado com sucesso! Faça login.";
     registerMessage.className = "message success";
     registerMessage.style.display = "block";
 
     registerForm.reset(); // Limpa o formulário
 
     //   Opcional: Redirecionar automaticamente para a tela de login após o cadastro
-    //   setTimeout(() => {
-    //     showForm(loginForm, registerForm, showLoginBtn, showRegisterBtn);
-    //     loginForm.elements["loginEmail"].value = email; // Preenche o email para conveniência
-    //   }, 1500);
+    setTimeout(() => {
+      showForm(loginForm, registerForm, showLoginBtn, showRegisterBtn);
+      loginForm.elements["loginEmail"].value = email; // Preenche o email para conveniência
+    }, 1500);
   });
 
   // ---- Lógica de Login ----
