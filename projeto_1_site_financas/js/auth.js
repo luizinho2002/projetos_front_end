@@ -24,15 +24,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //  Event Listeners para os botões de alternar
   showLoginBtn.addEventListener("click", () => {
-    showForm(loginForm, registerForm, showRegisterBtn, showLoginBtn);
+    showForm(loginForm, registerForm, showLoginBtn, showRegisterBtn);
+  });
+
+  showRegisterBtn.addEventListener("click", () => {
+    showForm(registerForm, loginForm, showRegisterBtn, showLoginBtn);
   });
 
   // ---- Lógica de Cadastro ----
   registerForm.addEventListener("submit", (e) => {
     e.preventDefault(); // Evita o recarregamento da página
 
-    const username = registerForm.elements["registerUsername"].value;
-    const email = registerForm.elementos["registerEmail"].value;
+    const username = registerForm.elements["registerName"].value;
+    const email = registerForm.elements["registerEmail"].value;
 
     const password = registerForm.elements["registerPassword"].value;
 
@@ -65,11 +69,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     registerForm.reset(); // Limpa o formulário
 
-    // Opcional: Redirecionar automaticamente para a tela de login após o cadastro
-    // setTimeout(() => {
+    //   Opcional: Redirecionar automaticamente para a tela de login após o cadastro
+    //   setTimeout(() => {
     //     showForm(loginForm, registerForm, showLoginBtn, showRegisterBtn);
-    //     loginForm.elements['loginEmail'].value = email; // Preenche o email para conveniência
-    // }, 1500);
+    //     loginForm.elements["loginEmail"].value = email; // Preenche o email para conveniência
+    //   }, 1500);
   });
 
   // ---- Lógica de Login ----
