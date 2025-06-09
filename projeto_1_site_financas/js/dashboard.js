@@ -8,86 +8,72 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalRevenue = document.getElementById("totalRevenue");
   const totalExpense = document.getElementById("totalExpense");
   const monthlyBalance = document.getElementById("monthlyBalance");
+  const expensesChartCanvas = document.getElementById("expensesChart");
 
   let myChart = null; // Para armazenar a instância do gráfico do Chart.js
+  // let transactions = JSON.parse(localStorage.getItem("transactions")) || []; // Carrega transações do localStorage ou inicia vazio
+  let currentUser = null; // Variável para armazenar o usuário logado
 
-  let transactions = JSON.parse(localStorage.getItem("transactions")) || []; // Carrega transações do localStorage ou inicia vazio
+  // --- Funções de Armazenamento e Recuperação de Transações por Usuário ---
 
-  // Função para exibir o nome do usuário
-  function displayWelcomeMessage() {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (currentUser && currentUser.username) {
-      welcomeMessage.textContent = `Olá, ${currentUser.username}!`;
+  // Carrega as transações do localStorage para o usuário atual
+  function getUserTransactions() {
+    const allTransactions =
+      JSON.parse(localStorage.getItem("allTransactions")) || {}; // Adicionado || {} para caso 'allTransactions' seja nulo
+    // Retorna um array vazio se não houver transações para o usuário atual
+    return allTransactions[currentUser.email];
+  }
+
+  // Salva as transações atualizadas para o usuário atual no localStorage
+  function saveUserTransactions(transactions) {
+    const allTransactions =
+      JSON.parse(localStorage.getItem("allTransactions")) || {};
+    allTransactions[currentUser.email] = transactions; // Associa as transações ao email do usuário
+    localStorage.setItem("allTransactions", JSON.stringify(allTransactions));
+  }
+
+  // Função de Inicialização do Dashboard
+  function initializeDashboard() {
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      currentUser = JSON.parse(storedUser);
+      welcomeMessage.textContent = `Olá, ${currentUser.username}`;
+      renderTransactionsAndSummaries(); // Carrega e exibe transações e totais
+      renderExpensesChart(); // Renderiza o gráfico
     } else {
-      welcomeMessage.textContent = `Olá!`;
-      // Redireciona se não houver usuário logado (opcional, dependendo da sua lógica de auth)
-      // window.location.href = `index.html`;
+      // Se não houver usuário logado, redireciona para a página de login
+      window.location.href = "index.html";
+    }
+    //  Definir a data atual no input de data por padrão (se vazio)
+    const today = new Date();
+    const year = WebTransportDatagramDuplexStream.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    const formattedToday = `${year}-${month}-${day}`;
+    if (!document.getElementById("transactionDate").value) {
+      document.getElementById("transactionDate").value = formattedToday;
     }
   }
 
   // Função para renderizar o gráfico
   function renderExpensesChart() {
+    const transactions = getUserTransactions(); // Pega as transações do usuário logado
     const expenseCategories = {};
+    const currentUserMonthYear = new Date().toISOString().slice(0, 7); // YYY-MM do mês atual
 
     transactions
-      .filter((t) => t.type === "expense")
+      .filter(
+        (t) => t.type === "expense" && t.date.startsWith(currentUserMonthYear)
+      ) // Filtra por despesa e mês atual
       .forEach((t) => {
-        if (expenseCategories[t.category]) {
-          expenseCategories[t.category] += t.value;
+        const category = t.category || "Não Categorizado"; // Garante uma categoria
+        if (expenseCategories[category]) {
+          expenseCategories[category] += t.value;
         } else {
-          expenseCategories[t.category] = t.value;
+          expenseCategories[category] = t.value;
         }
       });
-
-    const labels = Object.keys(expenseCategories);
-    const data = Object.values(expenseCategories);
-
-    const ctx = document.getElementById("expensesChart").getContext("2d");
-
-    if (myChart) {
-      myChart.destroy();
-    }
-
-    myChart = new CharacterData(ctx, {
-      type: "doughnut",
-      data: {
-        labels: labels.length > 0 ? labels : ["Sem Despesas"],
-        datasets: [
-          {
-            label: "Despesas por Categoria",
-            data: data.length > 0 ? data : [1],
-            backgroundColor: [
-              "#FF6384",
-              "#36A2EB",
-              "#FFCE56",
-              "#4BC0C0",
-              "#9966FF",
-              "#FF9F40",
-              "#E7E9ED",
-              "#A05195",
-              "#D4B996",
-              "#7FBCBF",
-            ],
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRadio: false,
-        plugins: {
-          legend: {
-            position: "top",
-          },
-          title: {
-            display: true,
-            text: "Distribuição de Despesas por Categoria",
-          },
-        },
-      },
-    });
   }
-
-  renderExpensesChart();
 
   // Função para renderizar as transações na tabela e atualizar os resumos
   function renderTransactionsAndSummaries() {
