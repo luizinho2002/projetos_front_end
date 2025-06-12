@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const storedUser = localStorage.getItem("currentUser");
     if (storedUser) {
       currentUser = JSON.parse(storedUser);
-      welcomeMessage.textContent = `Olá, ${currentUser.username}`;
+      welcomeMessage.textContent = `Olá, ${currentUser.username}!`;
       renderTransactionsAndSummaries(); // Carrega e exibe transações e totais
       renderExpensesChart(); // Renderiza o gráfico
     } else {
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     //  Definir a data atual no input de data por padrão (se vazio)
     const today = new Date();
-    const year = WebTransportDatagramDuplexStream.getFullYear();
+    const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
     const formattedToday = `${year}-${month}-${day}`;
@@ -81,12 +81,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const ctx = expensesChartCanvas.getContext("2d");
 
     if (myChart) {
-      myChart;
-      destroy(); // Destroi a instância anterior do gráfico se existir
+      myChart.destroy(); // Destroi a instância anterior do gráfico se existir
     }
 
     // new CharacterData para new Chart
-    myChart = new myChart(ctx, {
+    myChart = new Chart(ctx, {
       type: "doughnut",
       data: {
         labels: labels.length > 0 ? labels : ["Sem Despesas"],
@@ -108,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
               "#58B368",
               "#FFD700",
             ],
-            hoverOffser: 4,
+            hoverOffset: 4,
           },
         ],
       },
@@ -134,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   label += new Intl.NumberFormat("pt-BR", {
                     style: "currency",
                     currency: "BRL",
-                  }).format(context, parsed);
+                  }).format(context.parsed);
                 }
                 return label;
               },
@@ -156,14 +155,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Filtrar transações apenas para o mês atual
     const transactionsForCurrentMonth = transactions.filter((t) => {
-      t.date && t.date.startsWith(currentMonthYear);
+      return t.date && t.date.startsWith(currentMonthYear);
     });
 
     // Usar transactionsForCurrentMonth para renderizar e calcular
     if (transactionsForCurrentMonth.length === 0) {
       // colspan para 6 devido à nova coluna 'Ações'
       transactionsList.innerHTML =
-        '<tr><td colspan="6" class="no-transactions-message">Nenhuma transação registrada ainda neste mês.</td></tr>;';
+        '<tr><td colspan="6" class="no-transactions-message">Nenhuma transação registrada ainda neste mês.</td></tr>';
     } else {
       // Ordenar transações por data (mais recente primeiro)
       transactionsForCurrentMonth.sort(
@@ -173,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
       transactionsForCurrentMonth.forEach((transaction) => {
         const newRow = transactionsList.insertRow();
         // Formatar a data para exibição
-        newRow.insertCell(0).textContent = formaDate(transaction.date);
+        newRow.insertCell(0).textContent = formatDate(transaction.date);
         newRow.insertCell(1).textContent =
           transaction.type === "revenue" ? "Receita" : "Despesa";
         newRow.insertCell(2).textContent = transaction.description;
@@ -204,10 +203,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     totalRevenue.textContent = `R$ ${revenue.toFixed(2).replace(".", ",")}`;
-    totalExpense.textContent = `R$ ${expense.toFixed(2).replace(",", ",")}`;
-    monthlyBalance.textContent = `R$ ${monthlyBalance
-      .toFixed(2)
-      .replace(".", ",")}`;
+    totalExpense.textContent = `R$ ${expense.toFixed(2).replace(".", ",")}`;
+    const balance = revenue - expense; // Definição da variáel 'balance'
+    monthlyBalance.textContent = `R$ ${balance.toFixed(2).replace(".", ",")}`;
 
     // Atualiza a cor do saldo baseado no valor
     if (balance < 0) {
@@ -241,6 +239,15 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       return;
     }
+    // Adicionada validação para categoria selecionada
+    if (category === "") {
+      showMessage(
+        transactionMessage,
+        "Por favor, selecione uma categoria",
+        "error"
+      );
+      return;
+    }
 
     const newTransaction = {
       id: Date.now(), // ID único para transação
@@ -259,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showMessage(
       transactionMessage,
       "Transação adicionada com sucesso!",
-      "sucess"
+      "success"
     );
 
     transactionForm.reset(); // Limpa o formulário
@@ -270,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const day = String(today.getDate()).padStart(2, "0");
     document.getElementById(
       "transactionDate"
-    ).value = `${value}-${month}-${day}`;
+    ).value = `${year}-${month}-${day}`;
 
     renderTransactionsAndSummaries(); // Atualiza a UI
   });
@@ -286,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showMessage(
           transactionMessage,
           "Transação excluída com sucesso!",
-          "sucess"
+          "success"
         );
         renderTransactionsAndSummaries(); // Atualiza a UI
       }
@@ -305,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Função auxiliar para formatar a data
-  function formatData(dateString) {
+  function formatDate(dateString) {
     if (!dateString) return "";
     const [year, month, day] = dateString.split("-");
     return `${day}/${month}/${year}`;
@@ -313,12 +320,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Evento para botão de Sair/Logout
   logoutBtn.addEventListener("click", (e) => {
-    e.preventDefault(e);
+    e.preventDefault();
     if (confirm("Tem certeza que deseja sair?")) {
       // Confirmação antes de sair
       localStorage.removeItem("currentUser"); // Remove o usuário logado do localStorage
-      // IMPORTANTE: NÃO REMOVA 'allTransactions' AQUI, pois contém dados de outros usuários
-      windows.location.href = "index.html"; // Redireciona para página de login
+      // * IMPORTANTE: NÃO REMOVA 'allTransactions' AQUI, pois contém dados de outros usuários
+      window.location.href = "index.html"; // Redireciona para página de login
     }
   });
 
